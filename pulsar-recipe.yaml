@@ -5,6 +5,36 @@ version: 1.0.0
 author: Pulsar Framework
 description: One-click txAdmin recipe to deploy Pulsar Framework.
 
+$variables:
+  - name: licenseKey
+    label: CFX License Key
+    type: string
+    default: ""
+  - name: dbHost
+    label: Database Host
+    type: string
+    default: localhost
+  - name: dbPort
+    label: Database Port
+    type: string
+    default: "3306"
+  - name: dbName
+    label: Database Name
+    type: string
+    default: pulsarfw
+  - name: dbUser
+    label: Database Username
+    type: string
+    default: ""
+  - name: dbPassword
+    label: Database Password
+    type: string
+    default: ""
+  - name: serverName
+    label: Server Name
+    type: string
+    default: My Pulsar Framework Server
+
 tasks:
   # Download base config files from companion repo
   - action: download_github
@@ -15,6 +45,21 @@ tasks:
   - action: move_path
     src: ./tmp/pulsar-recipe/server.cfg
     dest: ./server.cfg
+
+  - action: replace_string
+    file: ./server.cfg
+    search: "REPLACE_WITH_YOUR_LICENSE_KEY"
+    replace: "{{licenseKey}}"
+
+  - action: replace_string
+    file: ./server.cfg
+    search: "mysql://REPLACE_WITH_DB_USER:REPLACE_WITH_DB_PASS@localhost:3306/pulsarfw"
+    replace: "mysql://{{dbUser}}:{{dbPassword}}@{{dbHost}}:{{dbPort}}/{{dbName}}"
+
+  - action: replace_string
+    file: ./server.cfg
+    search: "My Pulsar Framework Server"
+    replace: "{{serverName}}"
 
   - action: move_path
     src: ./tmp/pulsar-recipe/configs
