@@ -1,22 +1,5 @@
--- --------------------------------------------------------
--- Host:                         127.0.0.1
--- Server version:               10.6.12-MariaDB - mariadb.org binary distribution
--- Server OS:                    Win64
--- HeidiSQL Version:             11.3.0.6295
--- --------------------------------------------------------
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
-
-DROP DATABASE IF EXISTS `pulsarfw`;
-CREATE DATABASE IF NOT EXISTS `pulsarfw` /*!40100 DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci */;
-USE `pulsarfw`;
-
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `billboards`;
 CREATE TABLE IF NOT EXISTS `billboards` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
