@@ -8,7 +8,7 @@ description: One-click txAdmin recipe to deploy Pulsar Framework.
 tasks:
   # Download base config files from companion repo
   - action: download_github
-    src: https://github.com/PulsarFW/PLSR-TxRecipie
+    src: https://github.com/PulsarFW/PLSR-TxRecipe
     ref: main
     dest: ./tmp/pulsar-recipe
 
