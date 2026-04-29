@@ -1,0 +1,83 @@
+name: Bundle release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get latest code
+        uses: actions/checkout@v4
+
+      - name: Download all resources
+        run: |
+          mkdir -p "./bundle/[ox]" "./bundle/[pulsar]" "./bundle/[standalone]"
+
+          BASE="https://github.com/PulsarFW"
+
+          download_and_unzip() {
+            local r=$1 dest=$2
+            if curl -fsSL --retry 5 --retry-delay 5 --retry-all-errors -o /tmp/${r}.zip ${BASE}/${r}/releases/latest/download/${r}.zip; then
+              unzip -q /tmp/${r}.zip -d "${dest}/"
+            else
+              echo "WARNING: skipping ${r} — no release found"
+            fi
+          }
+
+          # OX
+          for r in oxmysql ox_lib ox_target ox_inventory ox_inv_addons ox_doorlock; do
+            download_and_unzip "$r" "./bundle/[ox]"
+          done
+
+          # Pulsar
+          for r in \
+            pulsar-loadscreen pulsar-core pulsar-queue pulsar-pwnzor \
+            pulsar-objects pulsar-chat pulsar-commands pulsar-characters \
+            pulsar-ped pulsar-kbs pulsar-admin pulsar-ipl pulsar-polyzone \
+            pulsar-lasers pulsar-hud pulsar-games pulsar-blips pulsar-sounds \
+            pulsar-menu pulsar-sync pulsar-scenes pulsar-pedinteraction \
+            pulsar-status pulsar-damage pulsar-escort pulsar-animations \
+            pulsar-weapons pulsar-businesses pulsar-vacation pulsar-finance \
+            pulsar-laptop pulsar-killzones pulsar-elevators pulsar-apartments \
+            pulsar-properties pulsar-weed pulsar-drugs pulsar-robbery \
+            pulsar-jail pulsar-evidence pulsar-vehicles pulsar-dealerships \
+            pulsar-customs pulsar-fuel pulsar-tow pulsar-fitment pulsar-jobs \
+            pulsar-labor pulsar-mechanic pulsar-police pulsar-cctv pulsar-mdt \
+            pulsar-radar pulsar-restaurant pulsar-taxi pulsar-billboards \
+            pulsar-casino pulsar-dj pulsar-xmas pulsar-voip pulsar-radio \
+            pulsar-phone pulsar-ws; do
+            download_and_unzip "$r" "./bundle/[pulsar]"
+          done
+
+          # Standalone
+          for r in coords xsound screencapture discord-screenshot; do
+            download_and_unzip "$r" "./bundle/[standalone]"
+          done
+
+          # Pack everything into one zip
+          cd ./bundle && zip -9 -r ../pulsar-framework-full.zip . && cd ..
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Pulsar Framework ${{ github.ref_name }}"
+          body: |
+            ![Pulsar Framework](https://r2.fivemanage.com/GPYOH8Hq4GPyAY7czrgLe/pulsarbanner.png)
+
+            ## Pulsar Framework ${{ github.ref_name }}
+
+            Full framework bundle — manual download for server owners who prefer to install manually.
+            For automated deployment use the txAdmin recipe instead.
+
+            ---
+            ![Pulsar Framework](https://img.shields.io/badge/Pulsar-Framework-7c3aed?style=flat-square)
+            ![Built for FiveM](https://img.shields.io/badge/Built_for-FiveM-F40552?style=flat-square)
+          files: pulsar-framework-full.zip
+          prerelease: false
