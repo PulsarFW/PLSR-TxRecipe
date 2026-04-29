@@ -19,7 +19,7 @@ txAdmin recipe and server configuration files for deploying a full Pulsar Framew
 1. Open txAdmin and navigate to **Setup > Remote URL Recipe**
 2. Paste the following URL:
    ```
-   https://raw.githubusercontent.com/PulsarFW/PLSR-TxRecipie/main/pulsar-recipe.yaml
+   https://raw.githubusercontent.com/PulsarFW/PLSR-TxRecipe/main/pulsar-recipe.yaml
    ```
 3. Follow the on-screen prompts
 4. Fill in the required values when asked:
