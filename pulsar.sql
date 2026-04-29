@@ -116,8 +116,7 @@ CREATE TABLE IF NOT EXISTS `blueline_race_history` (
   `date` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`) USING BTREE,
   KEY `pd_race_history_track` (`track`) USING BTREE,
-  KEY `host` (`host`),
-  CONSTRAINT `pd_race_history_track` FOREIGN KEY (`track`) REFERENCES `blueline_tracks` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `host` (`host`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 DROP TABLE IF EXISTS `blueline_tracks`;
@@ -145,9 +144,7 @@ CREATE TABLE IF NOT EXISTS `blueline_track_history` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `pd_track_history_track` (`track`) USING BTREE,
   KEY `pd_track_history_race` (`race`) USING BTREE,
-  KEY `callsign` (`callsign`),
-  CONSTRAINT `pd_track_history_race` FOREIGN KEY (`race`) REFERENCES `blueline_race_history` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `pd_track_history_track` FOREIGN KEY (`track`) REFERENCES `blueline_tracks` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `callsign` (`callsign`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 DROP TABLE IF EXISTS `business_configs`;
@@ -397,8 +394,7 @@ CREATE TABLE IF NOT EXISTS `character_chatter_groups` (
   `chatty_group` bigint(20) unsigned NOT NULL,
   `joined_date` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`sid`,`chatty_group`) USING BTREE,
-  KEY `chatter_char_group` (`chatty_group`),
-  CONSTRAINT `chatter_char_group` FOREIGN KEY (`chatty_group`) REFERENCES `chatter_groups` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `chatter_char_group` (`chatty_group`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 DROP TABLE IF EXISTS `character_contacts`;
@@ -438,8 +434,7 @@ CREATE TABLE IF NOT EXISTS `character_documents_shared` (
   UNIQUE KEY `doc_id_sid` (`doc_id`,`sid`),
   KEY `sid` (`sid`),
   KEY `sharer` (`sharer`),
-  KEY `doc_sid` (`doc_id`) USING BTREE,
-  CONSTRAINT `doc_shared` FOREIGN KEY (`doc_id`) REFERENCES `character_documents` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `doc_sid` (`doc_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 DROP TABLE IF EXISTS `character_emails`;
@@ -522,8 +517,7 @@ CREATE TABLE IF NOT EXISTS `chatter_messages` (
   `timestamp` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `chatter_msg_group` (`group`),
-  KEY `chatter_msg_author` (`author`),
-  CONSTRAINT `chatter_msg_group` FOREIGN KEY (`group`) REFERENCES `chatter_groups` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `chatter_msg_author` (`author`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 DROP TABLE IF EXISTS `crafting_cooldowns`;
@@ -966,8 +960,7 @@ CREATE TABLE IF NOT EXISTS `mdt_reports_evidence` (
   `label` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `value` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `report` (`report`),
-  CONSTRAINT `FK1_mdt_reports_evidence` FOREIGN KEY (`report`) REFERENCES `mdt_reports` (`id`) ON DELETE CASCADE
+  KEY `report` (`report`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 DROP TABLE IF EXISTS `mdt_reports_people`;
@@ -1000,9 +993,7 @@ CREATE TABLE IF NOT EXISTS `mdt_reports_people` (
   KEY `type` (`type`),
   KEY `sentenced` (`sentenced`),
   KEY `expunged` (`expunged`),
-  KEY `FK2_mdt_reports_people` (`warrant`),
-  CONSTRAINT `FK2_mdt_reports_people` FOREIGN KEY (`warrant`) REFERENCES `mdt_warrants` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_mdt_reports_people` FOREIGN KEY (`report`) REFERENCES `mdt_reports` (`id`) ON DELETE CASCADE
+  KEY `FK2_mdt_reports_people` (`warrant`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 DROP TABLE IF EXISTS `mdt_warrants`;
@@ -1021,9 +1012,7 @@ CREATE TABLE IF NOT EXISTS `mdt_warrants` (
   PRIMARY KEY (`id`),
   KEY `suspect` (`suspect`),
   KEY `report` (`report`),
-  KEY `expires` (`expires`),
-  CONSTRAINT `FK1_mdt_warrants` FOREIGN KEY (`report`) REFERENCES `mdt_reports` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `FK2_mdt_warrants` FOREIGN KEY (`suspect`) REFERENCES `mdt_reports_people` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  KEY `expires` (`expires`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 DROP TABLE IF EXISTS `meth_tables`;
@@ -1917,8 +1906,7 @@ CREATE TABLE IF NOT EXISTS `whitelisted_peds` (
   `created` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `sid` (`sid`),
-  KEY `model` (`model`),
-  CONSTRAINT `whitelisted_peds_sid_fk` FOREIGN KEY (`sid`) REFERENCES `characters` (`SID`) ON DELETE CASCADE
+  KEY `model` (`model`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `placed_meth_tables`;
@@ -1942,8 +1930,7 @@ CREATE TABLE IF NOT EXISTS `placed_moonshine_barrels` (
   `coords` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`coords`)),
   `heading` float NOT NULL,
   `brew_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`brew_data`)),
-  PRIMARY KEY (`barrel_id`),
-  CONSTRAINT `placed_moonshine_barrels_ibfk_1` FOREIGN KEY (`barrel_id`) REFERENCES `moonshine_barrels` (`id`) ON DELETE CASCADE
+  PRIMARY KEY (`barrel_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 DROP TABLE IF EXISTS `placed_moonshine_stills`;
@@ -1954,8 +1941,7 @@ CREATE TABLE IF NOT EXISTS `placed_moonshine_stills` (
   `expires` int(11) NOT NULL,
   `coords` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`coords`)),
   `heading` float NOT NULL,
-  PRIMARY KEY (`still_id`),
-  CONSTRAINT `placed_moonshine_stills_ibfk_1` FOREIGN KEY (`still_id`) REFERENCES `moonshine_stills` (`id`) ON DELETE CASCADE
+  PRIMARY KEY (`still_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 DROP TABLE IF EXISTS `placed_props`;
@@ -2028,8 +2014,7 @@ CREATE TABLE IF NOT EXISTS `redline_racer_history` (
   `track` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `racer_history_track` (`track`),
-  KEY `racer_history` (`sid`) USING BTREE,
-  CONSTRAINT `racer_history_track` FOREIGN KEY (`track`) REFERENCES `redline_tracks` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `racer_history` (`sid`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 DROP TABLE IF EXISTS `redline_race_history`;
@@ -2044,8 +2029,7 @@ CREATE TABLE IF NOT EXISTS `redline_race_history` (
   `racers` longtext NOT NULL DEFAULT '[]',
   `date` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
-  KEY `race_history_track` (`track`),
-  CONSTRAINT `race_history_track` FOREIGN KEY (`track`) REFERENCES `redline_tracks` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `race_history_track` (`track`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 DROP TABLE IF EXISTS `redline_tracks`;
@@ -2073,9 +2057,7 @@ CREATE TABLE IF NOT EXISTS `redline_track_history` (
   PRIMARY KEY (`id`),
   KEY `track_history_track` (`track`),
   KEY `track_history_race` (`race`),
-  KEY `sid` (`sid`),
-  CONSTRAINT `track_history_race` FOREIGN KEY (`race`) REFERENCES `redline_race_history` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `track_history_track` FOREIGN KEY (`track`) REFERENCES `redline_tracks` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `sid` (`sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 DROP TABLE IF EXISTS `scenes`;
