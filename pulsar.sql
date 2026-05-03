@@ -2072,6 +2072,7 @@ CREATE TABLE IF NOT EXISTS `scenes` (
   `distance` float DEFAULT NULL,
   `route` int(11) DEFAULT NULL,
   `text` text DEFAULT NULL,
+  `background` text DEFAULT NULL,
   PRIMARY KEY (`_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
