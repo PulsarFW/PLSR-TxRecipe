@@ -360,7 +360,7 @@ CREATE TABLE IF NOT EXISTS `characters` (
   CONSTRAINT `DrugStates` CHECK (json_valid(`DrugStates`)),
   CONSTRAINT `CasinoChips` CHECK (json_valid(`CasinoChips`)),
   CONSTRAINT `LSUNDGInviter` CHECK (json_valid(`LSUNDGInviter`)),
-  CONSTRAINT `MDTSuspension` CHECK (json_valid(`MDTSuspension`)),
+  CONSTRAINT `MDTSuspension` CHECK (json_valid(`MDTSuspension`))
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 DROP TABLE IF EXISTS `character_app_profiles`;
