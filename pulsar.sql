@@ -328,7 +328,6 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `Attorney` tinyint(1) DEFAULT 0,
   `MDTSuspension` tinyint(1) DEFAULT 0,
   `DrugStates` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `Inventory` longtext DEFAULT NULL,
   `CasinoChips` LONGTEXT DEFAULT NULL,
   `LSUNDGInviter` JSON DEFAULT NULL,
   `LSUNDGBan` JSON DEFAULT NULL,
@@ -361,6 +360,15 @@ CREATE TABLE IF NOT EXISTS `characters` (
   CONSTRAINT `CasinoChips` CHECK (json_valid(`CasinoChips`)),
   CONSTRAINT `LSUNDGInviter` CHECK (json_valid(`LSUNDGInviter`))
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+DROP TABLE IF EXISTS `ox_inventory`;
+CREATE TABLE IF NOT EXISTS `ox_inventory` (
+  `owner` varchar(60) DEFAULT NULL,
+  `name` varchar(100) NOT NULL,
+  `data` longtext DEFAULT NULL,
+  `lastupdated` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  UNIQUE KEY `owner` (`owner`,`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `character_app_profiles`;
 CREATE TABLE IF NOT EXISTS `character_app_profiles` (
