@@ -1,4 +1,4 @@
-name: Bundle release
+name: Bundle Server Release
 
 on:
   push:
@@ -13,56 +13,186 @@ jobs:
   bundle:
     runs-on: ubuntu-latest
     steps:
-      - name: Get latest code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Download all resources
+      - name: Create directory structure
         run: |
-          mkdir -p "./bundle/[ox]" "./bundle/[pulsar]" "./bundle/[standalone]"
+          mkdir -p bundle/resources/[cfx-default]
+          mkdir -p bundle/resources/[ox]
+          mkdir -p bundle/resources/[pulsar]
+          mkdir -p bundle/resources/[standalone]
+          mkdir -p bundle/resources/[assets_maps]
+          mkdir -p /tmp/zips
 
+      - name: Copy server files
+        run: |
+          cp server.cfg    bundle/server.cfg
+          cp logo96.png    bundle/logo96.png
+          cp pulsar.sql    bundle/pulsar.sql
+          cp -r configs    bundle/configs
+
+      - name: Download cfx-server-data
+        run: |
+          curl -fsSL --retry 3 -o /tmp/zips/cfx.zip \
+            https://github.com/citizenfx/cfx-server-data/archive/refs/heads/master.zip
+          unzip -q /tmp/zips/cfx.zip -d /tmp/cfx
+          cp -r /tmp/cfx/cfx-server-data-master/resources/. bundle/resources/[cfx-default]/
+
+      - name: Download ox resources (parallel)
+        run: |
           BASE="https://github.com/PulsarFW"
+          DEST="bundle/resources/[ox]"
 
-          download_and_unzip() {
-            local r=$1 dest=$2
-            if curl -fsSL --retry 5 --retry-delay 5 --retry-all-errors -o /tmp/${r}.zip ${BASE}/${r}/releases/latest/download/${r}.zip; then
-              unzip -q /tmp/${r}.zip -d "${dest}/"
-            else
-              echo "WARNING: skipping ${r} — no release found"
-            fi
-          }
+          dl() { curl -fsSL --retry 3 -o /tmp/zips/${1}.zip ${BASE}/${1}/releases/latest/download/${1}.zip && unzip -q /tmp/zips/${1}.zip -d ${DEST}/ || echo "WARN: skipped ${1}"; }
 
-          # OX
-          for r in oxmysql ox_lib ox_target ox_inventory ox_inv_addons ox_doorlock; do
-            download_and_unzip "$r" "./bundle/[ox]"
-          done
+          dl oxmysql          &
+          dl ox_lib           &
+          dl ox_target        &
+          dl ox_inventory     &
+          dl ox_inv_addons    &
+          dl ox_doorlock      &
+          wait
 
-          # Pulsar
-          for r in \
-            pulsar-loadscreen pulsar-core pulsar-queue pulsar-pwnzor \
-            pulsar-objects pulsar-chat pulsar-commands pulsar-characters \
-            pulsar-ped pulsar-kbs pulsar-admin pulsar-ipl pulsar-polyzone \
-            pulsar-lasers pulsar-hud pulsar-games pulsar-blips pulsar-sounds \
-            pulsar-menu pulsar-sync pulsar-scenes pulsar-pedinteraction \
-            pulsar-status pulsar-damage pulsar-escort pulsar-animations \
-            pulsar-weapons pulsar-businesses pulsar-vacation pulsar-finance \
-            pulsar-laptop pulsar-killzones pulsar-elevators pulsar-apartments \
-            pulsar-properties pulsar-weed pulsar-drugs pulsar-robbery \
-            pulsar-jail pulsar-evidence pulsar-vehicles pulsar-dealerships \
-            pulsar-customs pulsar-fuel pulsar-tow pulsar-fitment pulsar-jobs \
-            pulsar-labor pulsar-mechanic pulsar-police pulsar-cctv pulsar-mdt \
-            pulsar-radar pulsar-restaurant pulsar-taxi pulsar-billboards \
-            pulsar-casino pulsar-dj pulsar-xmas pulsar-voip pulsar-radio \
-            pulsar-phone pulsar-ws; do
-            download_and_unzip "$r" "./bundle/[pulsar]"
-          done
+      - name: Download pulsar resources batch 1 (parallel)
+        run: |
+          BASE="https://github.com/PulsarFW"
+          DEST="bundle/resources/[pulsar]"
 
-          # Standalone
-          for r in coords xsound screencapture discord-screenshot; do
-            download_and_unzip "$r" "./bundle/[standalone]"
-          done
+          dl() { curl -fsSL --retry 3 -o /tmp/zips/${1}.zip ${BASE}/${1}/releases/latest/download/${1}.zip && unzip -q /tmp/zips/${1}.zip -d ${DEST}/ || echo "WARN: skipped ${1}"; }
 
-          # Pack everything into one zip
-          cd ./bundle && zip -9 -r ../pulsar-framework-full.zip . && cd ..
+          dl pulsar-loadscreen    &
+          dl pulsar-core          &
+          dl pulsar-queue         &
+          dl pulsar-pwnzor        &
+          dl pulsar-objects       &
+          dl pulsar-chat          &
+          dl pulsar-commands      &
+          dl pulsar-characters    &
+          dl pulsar-ped           &
+          dl pulsar-kbs           &
+          dl pulsar-admin         &
+          dl pulsar-ipl           &
+          dl pulsar-polyzone      &
+          dl pulsar-lasers        &
+          dl pulsar-hud           &
+          wait
+
+      - name: Download pulsar resources batch 2 (parallel)
+        run: |
+          BASE="https://github.com/PulsarFW"
+          DEST="bundle/resources/[pulsar]"
+
+          dl() { curl -fsSL --retry 3 -o /tmp/zips/${1}.zip ${BASE}/${1}/releases/latest/download/${1}.zip && unzip -q /tmp/zips/${1}.zip -d ${DEST}/ || echo "WARN: skipped ${1}"; }
+
+          dl pulsar-games         &
+          dl pulsar-blips         &
+          dl pulsar-sounds        &
+          dl pulsar-menu          &
+          dl pulsar-sync          &
+          dl pulsar-scenes        &
+          dl pulsar-pedinteraction &
+          dl pulsar-status        &
+          dl pulsar-damage        &
+          dl pulsar-escort        &
+          dl pulsar-animations    &
+          dl pulsar-weapons       &
+          dl pulsar-businesses    &
+          dl pulsar-vacation      &
+          dl pulsar-finance       &
+          wait
+
+      - name: Download pulsar resources batch 3 (parallel)
+        run: |
+          BASE="https://github.com/PulsarFW"
+          DEST="bundle/resources/[pulsar]"
+
+          dl() { curl -fsSL --retry 3 -o /tmp/zips/${1}.zip ${BASE}/${1}/releases/latest/download/${1}.zip && unzip -q /tmp/zips/${1}.zip -d ${DEST}/ || echo "WARN: skipped ${1}"; }
+
+          dl pulsar-laptop        &
+          dl pulsar-killzones     &
+          dl pulsar-elevators     &
+          dl pulsar-apartments    &
+          dl pulsar-properties    &
+          dl pulsar-weed          &
+          dl pulsar-dealerships   &
+          dl pulsar-drugs         &
+          dl pulsar-robbery       &
+          dl pulsar-jail          &
+          dl pulsar-evidence      &
+          dl pulsar-vehicles      &
+          dl pulsar-customs       &
+          dl pulsar-fuel          &
+          dl pulsar-tow           &
+          wait
+
+      - name: Download pulsar resources batch 4 (parallel)
+        run: |
+          BASE="https://github.com/PulsarFW"
+          DEST="bundle/resources/[pulsar]"
+
+          dl() { curl -fsSL --retry 3 -o /tmp/zips/${1}.zip ${BASE}/${1}/releases/latest/download/${1}.zip && unzip -q /tmp/zips/${1}.zip -d ${DEST}/ || echo "WARN: skipped ${1}"; }
+
+          dl pulsar-fitment       &
+          dl pulsar-jobs          &
+          dl pulsar-labor         &
+          dl pulsar-mechanic      &
+          dl pulsar-police        &
+          dl pulsar-cctv          &
+          dl pulsar-mdt           &
+          dl pulsar-radar         &
+          dl pulsar-restaurant    &
+          dl pulsar-taxi          &
+          dl pulsar-billboards    &
+          dl pulsar-casino        &
+          dl pulsar-dj            &
+          dl pulsar-xmas          &
+          dl pulsar-voip          &
+          wait
+
+      - name: Download pulsar resources batch 5 (parallel)
+        run: |
+          BASE="https://github.com/PulsarFW"
+          DEST="bundle/resources/[pulsar]"
+
+          dl() { curl -fsSL --retry 3 -o /tmp/zips/${1}.zip ${BASE}/${1}/releases/latest/download/${1}.zip && unzip -q /tmp/zips/${1}.zip -d ${DEST}/ || echo "WARN: skipped ${1}"; }
+
+          dl pulsar-radio         &
+          dl pulsar-phone         &
+          dl pulsar-ws            &
+          wait
+
+      - name: Download standalone resources (parallel)
+        run: |
+          BASE="https://github.com/PulsarFW"
+          DEST="bundle/resources/[standalone]"
+
+          dl() { curl -fsSL --retry 3 -o /tmp/zips/${1}.zip ${BASE}/${1}/releases/latest/download/${1}.zip && unzip -q /tmp/zips/${1}.zip -d ${DEST}/ || echo "WARN: skipped ${1}"; }
+
+          dl coords               &
+          dl xsound               &
+          dl screencapture        &
+          dl discord-screenshot   &
+          wait
+
+      - name: Download assets_maps
+        env:
+          ASSETS_MAPS_URL: ${{ secrets.ASSETS_MAPS_URL }}
+        run: |
+          if [ -n "$ASSETS_MAPS_URL" ]; then
+            curl -fsSL --retry 3 -o /tmp/zips/assets_maps.zip "$ASSETS_MAPS_URL"
+            unzip -q /tmp/zips/assets_maps.zip -d bundle/resources/[assets_maps]/
+            echo "assets_maps bundled"
+          else
+            echo "WARN: ASSETS_MAPS_URL secret not set — [assets_maps] folder will be empty"
+          fi
+
+      - name: Pack bundle
+        run: |
+          cd bundle
+          zip -9 -r ../PulsarFW-${{ github.ref_name }}.zip .
+          cd ..
+          echo "Bundle size: $(du -sh PulsarFW-${{ github.ref_name }}.zip | cut -f1)"
 
       - name: Create release
         uses: softprops/action-gh-release@v2
@@ -73,11 +203,18 @@ jobs:
 
             ## Pulsar Framework ${{ github.ref_name }}
 
-            Full framework bundle — manual download for server owners who prefer to install manually.
-            For automated deployment use the txAdmin recipe instead.
+            ### One-click install
+            1. Download `PulsarFW-${{ github.ref_name }}.zip` below
+            2. Extract into your server directory
+            3. Fill in your details in `server.cfg`
+            4. Import `pulsar.sql` into your database
+            5. Start your server
+
+            > **Note:** Add your SSL certs to `resources/[pulsar]/pulsar-ws/` before starting.
+            > **Note:** Add `[assets_maps]` manually if not bundled — contact Pulsar Framework for access.
 
             ---
             ![Pulsar Framework](https://img.shields.io/badge/Pulsar-Framework-7c3aed?style=flat-square)
             ![Built for FiveM](https://img.shields.io/badge/Built_for-FiveM-F40552?style=flat-square)
-          files: pulsar-framework-full.zip
+          files: PulsarFW-${{ github.ref_name }}.zip
           prerelease: false
