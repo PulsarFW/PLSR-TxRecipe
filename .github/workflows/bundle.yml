@@ -203,17 +203,46 @@ jobs:
 
             ## Pulsar Framework ${{ github.ref_name }}
 
-            ### One-click install
-            1. Download `PulsarFW-${{ github.ref_name }}.zip` below
-            2. Extract into your server directory
-            3. Fill in your details in `server.cfg`
-            4. Import `pulsar.sql` into your database
-            5. Start your server
-
-            > **Note:** Add your SSL certs to `resources/[pulsar]/pulsar-ws/` before starting.
-            > **Note:** Add `[assets_maps]` manually if not bundled — contact Pulsar Framework for access.
+            This is the **complete pre-bundled server package** for Pulsar Framework. Every resource, config file, map asset, and database schema is included — no recipe runner, no manual downloads, no waiting. Extract and you're ready.
 
             ---
+
+            ### What's included
+            - All 63 Pulsar resources → `resources/[pulsar]/`
+            - All OX dependencies → `resources/[ox]/`
+            - CFX server defaults → `resources/[cfx-default]/`
+            - Standalone resources → `resources/[standalone]/`
+            - Map assets → `resources/[assets_maps]/`
+            - Pre-configured `server.cfg`, `configs/`, `logo96.png`
+            - Database schema → `pulsar.sql`
+
+            ---
+
+            ### Installation
+
+            **1. Extract**
+            Extract `PulsarFW-${{ github.ref_name }}.zip` into your server data directory (e.g. `C:\FXServer\server-data`).
+
+            **2. Configure `server.cfg`**
+            Open `server.cfg` and fill in your details:
+            ```
+            sv_licenseKey        — your FiveM license key (keymaster.fivem.net)
+            steam_webApiKey      — your Steam Web API key
+            mysql_connection_string — your MySQL connection string
+            ```
+            Optionally set your Discord webhook URLs in the webhook section.
+
+            **3. Import the database**
+            Import `pulsar.sql` into your MySQL database.
+
+            **4. Add SSL certs**
+            Place your `cert.pem` and `key.pem` inside `resources/[pulsar]/pulsar-ws/`.
+
+            **5. Point txAdmin to your server data**
+            In txAdmin when setting up your server, choose **"Local Server Data"** and point the path to the folder you extracted into. txAdmin will handle starting and managing the server from there — no recipe needed.
+
+            ---
+
             ![Pulsar Framework](https://img.shields.io/badge/Pulsar-Framework-7c3aed?style=flat-square)
             ![Built for FiveM](https://img.shields.io/badge/Built_for-FiveM-F40552?style=flat-square)
           files: PulsarFW-${{ github.ref_name }}.zip
