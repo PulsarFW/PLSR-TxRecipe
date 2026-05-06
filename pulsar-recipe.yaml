@@ -192,7 +192,7 @@ tasks:
   - action: unzip
     dest: ./resources/[pulsar]
     src: ./tmp/pulsar-hud.zip
-    timeoutSeconds: 60
+    timeoutSeconds: 200
 
   - action: download_file
     path: ./tmp/pulsar-games.zip
