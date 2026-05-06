@@ -326,7 +326,7 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `HUDConfig` longtext DEFAULT NULL,
   `Mugshot` varchar(255) DEFAULT NULL,
   `Attorney` tinyint(1) DEFAULT 0,
-  `MDTSuspension` tinyint(1) DEFAULT 0,
+  `MDTSuspension` LONGTEXT NULL DEFAULT NULL COLLATE 'utf8mb4_bin',
   `DrugStates` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `CasinoChips` LONGTEXT DEFAULT NULL,
   `LSUNDGInviter` JSON DEFAULT NULL,
@@ -358,7 +358,8 @@ CREATE TABLE IF NOT EXISTS `characters` (
   CONSTRAINT `Parole` CHECK (json_valid(`Parole`)),
   CONSTRAINT `DrugStates` CHECK (json_valid(`DrugStates`)),
   CONSTRAINT `CasinoChips` CHECK (json_valid(`CasinoChips`)),
-  CONSTRAINT `LSUNDGInviter` CHECK (json_valid(`LSUNDGInviter`))
+  CONSTRAINT `LSUNDGInviter` CHECK (json_valid(`LSUNDGInviter`)),
+  CONSTRAINT `MDTSuspension` CHECK (json_valid(`MDTSuspension`))
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 DROP TABLE IF EXISTS `ox_inventory`;
