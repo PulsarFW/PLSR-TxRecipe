@@ -1,31 +1,33 @@
 <div align="center">
   <img src="https://r2.fivemanage.com/GPYOH8Hq4GPyAY7czrgLe/pulsarbanner.png" alt="Pulsar Framework" width="100%">
 
-# Pulsar TxAdmin Recipie
-**One-click txAdmin recipe for deploying Pulsar Framework**
+# Pulsar Framework
+
+**Server installation guide for Pulsar Framework**
 
 [![FiveM](https://img.shields.io/badge/FiveM-F40552?style=flat-square)]()
-[![txAdmin](https://img.shields.io/badge/txAdmin-8.0%2B-blue?style=flat-square)]()
+[![GitHub Release](https://img.shields.io/github/v/release/PulsarFW/PulsarFW?style=flat-square)]()
 
 [Overview](#overview) • [Installation](#installation) • [License](#license)
 </div>
 
 ## Overview
 
-txAdmin recipe and server configuration files for deploying a full Pulsar Framework server in minutes. Automatically downloads and installs all resources, sets up the database, and configures your server.
+Server configuration files and installation guide for deploying a full Pulsar Framework server. All resources are distributed via GitHub Releases.
 
 ## Installation
 
-1. Open txAdmin and navigate to **Setup > Remote URL Recipe**
-2. Paste the following URL:
-   ```
-   https://raw.githubusercontent.com/PulsarFW/PLSR-TxRecipe/main/pulsar-recipe.yaml
-   ```
-3. Follow the on-screen prompts
-4. Fill in the required values when asked:
+1. Download the latest release from the [Releases](https://github.com/PulsarFW/PLSR-TxRecipe/releases/latest) page
+2. Extract all resources into your server's `resources/` folder
+3. Import `pulsar.sql` into your database
+4. Copy `server.cfg` and the `configs/` folder to your server root
+5. Fill in the required values in `server.cfg`:
    - `sv_licenseKey` — your Cfx.re license key from [keymaster.fivem.net](https://keymaster.fivem.net)
    - `steam_webApiKey` — your Steam API key from [steamcommunity.com/dev/apikey](https://steamcommunity.com/dev/apikey)
    - Database credentials
+
+**Notes:**
+- `pulsar-ws` requires `cert.pem` and `key.pem` placed manually in `resources/[pulsar]/pulsar-ws/`
 
 ## License
 
