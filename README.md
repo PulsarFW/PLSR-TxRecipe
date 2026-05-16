@@ -6,7 +6,7 @@
 **Server installation guide for Pulsar Framework**
 
 [![FiveM](https://img.shields.io/badge/FiveM-F40552?style=flat-square)]()
-[![GitHub Release](https://img.shields.io/github/v/release/PulsarFW/PulsarFW?style=flat-square)]()
+[![GitHub Release](https://img.shields.io/github/v/release/PulsarFW/PLSR-TxRecipe?style=flat-square)]()
 
 [Overview](#overview) • [Installation](#installation) • [License](#license)
 </div>
